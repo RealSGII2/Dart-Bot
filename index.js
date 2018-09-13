@@ -154,6 +154,7 @@ client.on("message", async message => {
       .catch(error => message.reply(`Couldn't delete messages because of: ${error}`));
   }
   if (command === "help") {
+    message.channel.send("You got mail!")
     message.author.send({embed: {
     color: 3447003,
     author: {
