@@ -1,4 +1,4 @@
-// Load up the discord.js library
+// Load up the discord.js library.
 const Discord = require("discord.js");
 
 // This is your client. Some people call it `bot`, some people call it `self`, 
