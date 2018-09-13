@@ -59,6 +59,33 @@ client.on("message", async message => {
     m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
   }
   
+  if (command === "invite") {
+    message.channel.send({embed: {
+    color: 3447003,
+    author: {
+      name: client.user.username,
+      icon_url: client.user.avatarURL
+    },
+    title: "Invite Dart's Assistant",
+    description: "This is a test embed to showcase what they look like and what they can do.",
+    fields: [{
+        name: "Invite Bot",
+        value: "You can invite **Dart's Assistant** [here](https://discordapp.com/api/oauth2/authorize?client_id=489353619842400266&permissions=8&scope=bot)."
+      },
+      {
+        name: "Support Server",
+        value: "Join our [support server](https://discord.gg/vvCHze4)."
+      },
+    ],
+    timestamp: new Date(),
+    footer: {
+      icon_url: client.user.avatarURL,
+      text: "Requested today at "
+    }
+  }
+});
+  }
+  
   if(command === "say") {
     // makes the bot say something and delete the message. As an example, it's open to anyone to use. 
     // To get the "message" itself we join the `args` back into a string with spaces: 
