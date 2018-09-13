@@ -55,11 +55,11 @@ client.on("message", async message => {
       name: client.user.username,
       icon_url: client.user.avatarURL
     },
-    title: "Invite Dart's Assistant",
-    description: "Dart's Assistant is currently a moderation bot. More to be added soon! ",
+    title: "Invite Dart Bot",
+    description: "Dart Bot is currently a moderation bot. More to be added soon! ",
     fields: [{
         name: "Invite Bot",
-        value: "You can invite **Dart's Assistant** [here](https://discordapp.com/api/oauth2/authorize?client_id=489353619842400266&permissions=8&scope=bot)."
+        value: "You can invite **Dart Bot** [here](https://discordapp.com/api/oauth2/authorize?client_id=489353619842400266&permissions=8&scope=bot)."
       },
       {
         name: "Support Server",
@@ -145,8 +145,8 @@ client.on("message", async message => {
     const deleteCount = parseInt(args[0], 10);
     
     // Ooooh nice, combined conditions. <3
-    if(!deleteCount || deleteCount < 2 || deleteCount > 100)
-      return message.reply("Please provide a number between 2 and 100 for the number of messages to delete");
+    if(!deleteCount || deleteCount < 2 || deleteCount > 10000)
+      return message.reply("Please provide a number between 2 and 10000 for the number of messages to delete");
     
     // So we get our messages, and delete them. Simple enough, right?
     const fetched = await message.channel.fetchMessages({limit: deleteCount});
@@ -161,10 +161,10 @@ client.on("message", async message => {
       icon_url: client.user.avatarURL
     },
     title: "Commands",
-    description: "Dart's Assistant's commands ",
+    description: "Dart Bot Commands ",
     fields: [{
         name: "Prefix",
-        value: "The prefix for the bot is: " + config.prefix
+        value: "The prefix for the bot is: `" + config.prefix + "`"
       },
       {
         name: "Commands",
