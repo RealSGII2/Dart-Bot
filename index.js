@@ -165,6 +165,40 @@ client.on("message", async message => {
     message.channel.bulkDelete(fetched)
       .catch(error => message.reply(`Couldn't delete messages because of: ${error}`));
   }
+  if (command === "help") {
+    message.author.send({embed: {
+    color: 3447003,
+    author: {
+      name: client.user.username,
+      icon_url: client.user.avatarURL
+    },
+    title: "Commands",
+    description: "Dart's Assistant's commands ",
+    fields: [{
+        name: "Prefix",
+        value: "The prefix for the bot is: " + config.prefix
+      },
+      {
+        name: "Commands",
+        value: "You may view the bot commands [here](https://github.com/RealSGII2/Dart-s-Assistant/wiki/Commands)."
+      },
+      {
+        name: "Support Server",
+        value: "Join our [support server](https://discord.gg/zn4rbyn) if you need help!"
+      },
+      {
+        name: "Invite the bot!",
+        value: "Run `*invite` to get the box invite."
+      },
+    ],
+    timestamp: new Date(),
+    footer: {
+      icon_url: client.user.avatarURL,
+      text: "Requested today at "
+    }
+  }
+});
+  }
 });
 
 client.login(config.token);
