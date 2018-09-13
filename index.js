@@ -67,7 +67,7 @@ client.on("message", async message => {
       icon_url: client.user.avatarURL
     },
     title: "Invite Dart's Assistant",
-    description: "This is a test embed to showcase what they look like and what they can do.",
+    description: "Dart's Assistant is currently a moderation bot. More to be added soon! ",
     fields: [{
         name: "Invite Bot",
         value: "You can invite **Dart's Assistant** [here](https://discordapp.com/api/oauth2/authorize?client_id=489353619842400266&permissions=8&scope=bot)."
@@ -94,6 +94,12 @@ client.on("message", async message => {
     message.delete().catch(O_o=>{}); 
     // And we get the bot to say the thing: 
     message.channel.send(sayMessage);
+  }
+  
+  if (command === "ss") {
+    const sayMessage = args.join(" ");
+    message.delete()
+    client.user.setStatus('online', sayMessage); 
   }
   
   if(command === "kick") {
