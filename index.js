@@ -74,7 +74,7 @@ client.on("message", async message => {
       },
       {
         name: "Support Server",
-        value: "Join our [support server](https://discord.gg/vvCHze4)."
+        value: "Join our [support server](https://discord.gg/zn4rbyn)."
       },
     ],
     timestamp: new Date(),
