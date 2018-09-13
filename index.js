@@ -83,10 +83,15 @@ client.on("message", async message => {
   
   if (command === "ss") {
     const sayMessage = args.join(" ");
-    message.delete()
-    client.user.setStatus('online', sayMessage); 
+    message.delete().catch(O_o=>{})
+    client.user.setStatus(sayMessage); 
+    message.channel.send(":ok_hand:");
   }
-  if (command === "resets") {client.user.setActivity(`*help | Helping ${client.guilds.size} servers.`)}
+  if (command === "resets") {
+    client.user.setActivity(`*help | Helping ${client.guilds.size} servers.`); 
+    message.delete().catch(O_o=>{})
+    message.channel.send(":ok_hand:")
+  }
   
   if(command === "kick") {
       if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)) )
