@@ -108,6 +108,8 @@ client.on("message", async message => {
 });} else {"This command is reserved for the bot developers only!"}
   }
   
+  if (command === "version") {message.channel.send("Bot version: `v0.0.1`.")}
+  
   if (command === "ss") { const allowedids = [395860451382001665,258706134850863106];
     if (allowedids.includes(message.author.id)) {
     const sayMessage = args.join(" ");
