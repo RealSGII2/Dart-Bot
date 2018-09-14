@@ -44,7 +44,7 @@ client.on("message", async message => {
   if(command === "ping") {
     // Calculates ping between sending a message and editing it, giving a nice round-trip latency.
     // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip)
-    const m = await message.channel.send("Ping?");
+    const m = await message.channel.send("Pinging...");
     m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
   }
   
@@ -69,16 +69,43 @@ client.on("message", async message => {
     timestamp: new Date(),
     footer: {
       icon_url: client.user.avatarURL,
-      text: "Requested today at "
+      text: "Requested"
     }
   }
 });
   }
   
-  if(command === "say") {
+  if(command === "say") { const allowedids = [395860451382001665,258706134850863106];
+    if (allowedids.includes(message.author.id)) {
     const sayMessage = args.join(" ");
     message.delete().catch(O_o=>{}); 
-    message.channel.send(sayMessage);
+    message.channel.send(sayMessage);} else {"This command is reserved for the bot developers only!"}
+  }
+  
+  if(command === "sayembed") { const allowedids = [395860451382001665,258706134850863106];
+    if (allowedids.includes(message.author.id)) {
+    const sayMessage = args.join(" ");
+    message.delete().catch(O_o=>{}); 
+    message.author.send({embed: {
+    color: 3447003,
+    author: {
+      name: client.user.username,
+      icon_url: client.user.avatarURL
+    },
+    title: "Dart Bot",
+    description: " ",
+    fields: [{
+        name: "Sent Embed",
+        value: sayMessage
+      },
+    ],
+    timestamp: new Date(),
+    footer: {
+      icon_url: client.user.avatarURL,
+      text: "Sent"
+    }
+  }
+});} else {"This command is reserved for the bot developers only!"}
   }
   
   if (command === "ss") { const allowedids = [395860451382001665,258706134850863106];
@@ -95,9 +122,21 @@ client.on("message", async message => {
     message.channel.send(":ok_hand:")} else {"This command is reserved for the bot developers only!"}
   }
   
+  if (command === "nick") { if (message.author.hasPermission("MANAGE_NICKNAMES")) {
+    let member = message.mentions.members.first() || message.guild.members.get(args[0]);
+    if(!member)
+      return message.reply("Please mention a valid member of this server");
+    let nick = args.slice(1).join(' ');
+    if(!nick) nick = "nil";
+    await member.setNickname(nick)
+      .catch(error => message.reply(`Sorry ${message.author} I couldn't kick because of : ${error}`));
+    message.reply(`:ok_hand: **${member.user.tag}'s** nickname changed by ${message.author.tag} was set to: **${nick}**`);} else {message.reply("Can't set the user's nickname, you're missing 'manage_nicknames' permission."}
+
+  }
+  
   if(command === "kick") {
       if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)) )
-      return message.reply("Sorry, you don't have permissions to use this!");
+      return message.reply("Can't kick the user, you're missing 'kick_members' permission.");
     
     // Let's first check if we have a member and if we can kick them!
     // message.mentions.members is a collection of people that have been mentioned, as GuildMembers.
@@ -124,7 +163,7 @@ client.on("message", async message => {
     // Most of this command is identical to kick, except that here we'll only let admins do it.
     // In the real world mods could ban too, but this is just an example, right? ;)
     if(!message.member.roles.some(r=>["Administrator"].includes(r.name)) )
-      return message.reply("Sorry, you don't have permissions to use this!");
+      return message.reply("Can't kick the user, you're missing 'kick_members' permission.");
     
     let member = message.mentions.members.first();
     if(!member)
@@ -185,7 +224,7 @@ client.on("message", async message => {
     timestamp: new Date(),
     footer: {
       icon_url: client.user.avatarURL,
-      text: "Requested today at "
+      text: "Requested"
     }
   }
 });
