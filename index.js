@@ -1,34 +1,22 @@
-// Load up the discord.js library.
 const Discord = require("discord.js");
-
-// This is your client. Some people call it `bot`, some people call it `self`, 
-// some might call it `cootchie`. Either way, when you see `client.something`, or `bot.something`,
-// this is what we're refering to. Your client.
 const client = new Discord.Client();
 
-// Here we load the config.json file that contains our token and our prefix values. 
 const config = require("./config.json");
-// config.token contains the bot's token
-// config.prefix contains the message prefix.
 
 client.on("ready", () => {
-  // This event will run if the bot starts, and logs in, successfully.
-  console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`); 
-  // Example of changing the bot's playing game to something useful. `client.user` is what the
-  // docs refer to as the "ClientUser".
-  client.user.setActivity(`Serving ${client.guilds.size} servers`);
+  client.user.setActivity(`*help | Helping ${client.guilds.size} servers.`)
+  console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`); ;
 });
 
 client.on("guildCreate", guild => {
-  // This event triggers when the bot joins a guild.
+  client.user.setActivity(`*help | Helping ${client.guilds.size} servers.`)
   console.log(`New guild joined: ${guild.name} (id: ${guild.id}). This guild has ${guild.memberCount} members!`);
-  client.user.setActivity(`Serving ${client.guilds.size} servers`);
 });
 
 client.on("guildDelete", guild => {
   // this event triggers when the bot is removed from a guild.
   console.log(`I have been removed from: ${guild.name} (id: ${guild.id})`);
-  client.user.setActivity(`Serving ${client.guilds.size} servers`);
+  client.user.setActivity(`*help | Helping ${client.guilds.size} servers.`)
 });
 
 
@@ -55,7 +43,7 @@ client.on("message", async message => {
   if(command === "ping") {
     // Calculates ping between sending a message and editing it, giving a nice round-trip latency.
     // The second ping is an average latency between the bot and the websocket server (one-way, not round-trip)
-    const m = await message.channel.send("Ping?");
+    const m = await message.channel.send("Pinging...");
     m.edit(`Pong! Latency is ${m.createdTimestamp - message.createdTimestamp}ms. API Latency is ${Math.round(client.ping)}ms`);
   }
   
@@ -66,11 +54,11 @@ client.on("message", async message => {
       name: client.user.username,
       icon_url: client.user.avatarURL
     },
-    title: "Invite Dart's Assistant",
-    description: "Dart's Assistant is currently a moderation bot. More to be added soon! ",
+    title: "Invite Dart Bot",
+    description: "Dart Bot is currently a moderation bot. More to be added soon! ",
     fields: [{
         name: "Invite Bot",
-        value: "You can invite **Dart's Assistant** [here](https://discordapp.com/api/oauth2/authorize?client_id=489353619842400266&permissions=8&scope=bot)."
+        value: "You can invite **Dart Bot** [here](https://discordapp.com/api/oauth2/authorize?client_id=489353619842400266&permissions=8&scope=bot)."
       },
       {
         name: "Support Server",
@@ -80,34 +68,76 @@ client.on("message", async message => {
     timestamp: new Date(),
     footer: {
       icon_url: client.user.avatarURL,
-      text: "Requested today at "
+      text: "Requested"
     }
   }
 });
   }
   
-  if(command === "say") {
-    // makes the bot say something and delete the message. As an example, it's open to anyone to use. 
-    // To get the "message" itself we join the `args` back into a string with spaces: 
+  if(command === "say") { const allowedids = [395860451382001665,258706134850863106];
+    if (allowedids.includes(message.author.id)) {
     const sayMessage = args.join(" ");
-    // Then we delete the command message (sneaky, right?). The catch just ignores the error with a cute smiley thing.
     message.delete().catch(O_o=>{}); 
-    // And we get the bot to say the thing: 
-    message.channel.send(sayMessage);
+    message.channel.send(sayMessage);} else {"This command is reserved for the bot developers only!"}
   }
   
-  if (command === "ss") {
+  if(command === "sayembed") { const allowedids = [395860451382001665,258706134850863106];
+    if (allowedids.includes(message.author.id)) {
     const sayMessage = args.join(" ");
-    message.delete()
-    client.user.setStatus('online', sayMessage); 
+    message.delete().catch(O_o=>{}); 
+    message.author.send({embed: {
+    color: 3447003,
+    author: {
+      name: client.user.username,
+      icon_url: client.user.avatarURL
+    },
+    title: "Dart Bot",
+    description: " ",
+    fields: [{
+        name: "Sent Embed",
+        value: sayMessage
+      },
+    ],
+    timestamp: new Date(),
+    footer: {
+      icon_url: client.user.avatarURL,
+      text: "Sent"
+    }
+  }
+});} else {"This command is reserved for the bot developers only!"}
+  }
+  
+  if (command === "version") {message.channel.send("Bot version: `v0.0.1`.")}
+  
+  if (command === "ss") { const allowedids = [395860451382001665,258706134850863106];
+    if (allowedids.includes(message.author.id)) {
+    const sayMessage = args.join(" ");
+    message.delete().catch(O_o=>{});
+    client.user.setStatus(sayMessage); 
+    message.channel.send(":ok_hand:");} else {"This command is reserved for the bot developers only!"}
+  }
+  if (command === "resets") { const allowedids = [395860451382001665,258706134850863106];
+    if (allowedids.includes(message.author.id)) {
+    client.user.setActivity(`*help | Helping ${client.guilds.size} servers.`); 
+    message.delete().catch(O_o=>{});
+    message.channel.send(":ok_hand:")} else {"This command is reserved for the bot developers only!"}
+  }
+  
+  if (command === "nick") { if (message.author.hasPermission("MANAGE_NICKNAMES")) {
+    let member = message.mentions.members.first() || message.guild.members.get(args[0]);
+    if(!member)
+      return message.reply("Please mention a valid member of this server");
+    let nick = args.slice(1).join(' ');
+    if(!nick) nick = "nil";
+    await member.setNickname(nick)
+      .catch(error => message.reply(`Sorry ${message.author} I couldn't kick because of : ${error}`));
+    message.reply(`:ok_hand: **${member.user.tag}'s** nickname changed by ${message.author.tag} was set to: **${nick}**`);} else {message.reply("Can't set the user's nickname, you're missing 'manage_nicknames' permission."}
+
   }
   
   if(command === "kick") {
-    // This command must be limited to mods and admins. In this example we just hardcode the role names.
-    // Please read on Array.some() to understand this bit: 
-    // https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/Array/some?
-    if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)) )
-      return message.reply("Sorry, you don't have permissions to use this!");
+      if(!message.author.hasPermission("KICK_MEMBERS"))
+      return message.reply("Can't kick the user, you're missing 'kick_members' permission.");
     
     // Let's first check if we have a member and if we can kick them!
     // message.mentions.members is a collection of people that have been mentioned, as GuildMembers.
@@ -133,8 +163,8 @@ client.on("message", async message => {
   if(command === "ban") {
     // Most of this command is identical to kick, except that here we'll only let admins do it.
     // In the real world mods could ban too, but this is just an example, right? ;)
-    if(!message.member.roles.some(r=>["Administrator"].includes(r.name)) )
-      return message.reply("Sorry, you don't have permissions to use this!");
+    if(!message.author.hasPermission("BAN_MEMBERS") )
+      return message.reply("Can't ban the user, you're missing 'ban_members' permission.");
     
     let member = message.mentions.members.first();
     if(!member)
@@ -151,20 +181,57 @@ client.on("message", async message => {
   }
   
   if(command === "purge") {
-    // This command removes all messages from all users in the channel, up to 100.
+    if(!message.author.hasPermission("MANAGE_MESSAGES"))
+      return message.reply("Can't purge, you're missing 'manage_messages' permission.")
     
     // get the delete count, as an actual number.
     const deleteCount = parseInt(args[0], 10);
     
     // Ooooh nice, combined conditions. <3
-    if(!deleteCount || deleteCount < 2 || deleteCount > 100)
-      return message.reply("Please provide a number between 2 and 100 for the number of messages to delete");
+    if(!deleteCount || deleteCount < 2 || deleteCount > 10000)
+      return message.reply("Please provide a number between 2 and 10000 for the number of messages to delete");
     
     // So we get our messages, and delete them. Simple enough, right?
     const fetched = await message.channel.fetchMessages({limit: deleteCount});
     message.channel.bulkDelete(fetched)
       .catch(error => message.reply(`Couldn't delete messages because of: ${error}`));
   }
+  if (command === "help") {
+    message.channel.send("You got mail!")
+    message.author.send({embed: {
+    color: 3447003,
+    author: {
+      name: client.user.username,
+      icon_url: client.user.avatarURL
+    },
+    title: "Commands",
+    description: "Dart Bot Commands ",
+    fields: [{
+        name: "Prefix",
+        value: "The prefix for the bot is: `" + config.prefix + "`"
+      },
+      {
+        name: "Commands",
+        value: "You may view the bot commands [here](https://github.com/RealSGII2/Dart-s-Assistant/wiki/Commands)."
+      },
+      {
+        name: "Support Server",
+        value: "Join our [support server](https://discord.gg/zn4rbyn) if you need help!"
+      },
+      {
+        name: "Invite the bot!",
+        value: "Run `*invite` to get the box invite."
+      },
+    ],
+    timestamp: new Date(),
+    footer: {
+      icon_url: client.user.avatarURL,
+      text: "Requested"
+    }
+  }
+});
+  }
 });
 
 client.login(config.token);
+      
