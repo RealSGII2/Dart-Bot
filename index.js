@@ -132,7 +132,7 @@ client.on("message", async message => {
     if(!nick) nick = "nil";
     await member.setNickname(nick)
       .catch(error => message.reply(`Sorry ${message.author} I couldn't kick because of : ${error}`));
-    message.reply(`:ok_hand: **${member.user.tag}'s** nickname changed by ${message.author.tag} was set to: **${nick}**`);} else {message.reply("Can't set the user's nickname, you're missing 'manage_nicknames' permission."}
+    message.reply(`:ok_hand: **${member.user.tag}'s** nickname changed by ${message.author.tag} was set to: **${nick}**`);} else {message.reply("Can't set the user's nickname, you're missing 'manage_nicknames' permission.")}
 
   }
   
@@ -164,7 +164,7 @@ client.on("message", async message => {
   if(command === "ban") {
     // Most of this command is identical to kick, except that here we'll only let admins do it.
     // In the real world mods could ban too, but this is just an example, right? ;)
-    if(!message.author.hasPermission("BAN_MEMBERS") )
+    if(!message.author.hasPermission("BAN_MEMBERS"))
       return message.reply("Can't ban the user, you're missing 'ban_members' permission.");
     
     let member = message.mentions.members.first();
