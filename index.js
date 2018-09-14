@@ -137,7 +137,7 @@ client.on("message", async message => {
   }
   
   if(command === "kick") {
-      if(!message.author.hasPermission("KICK_MEMBERS"))
+      if(!message.author.hasPermission('KICK_MEMBERS'))
       return message.reply("Can't kick the user, you're missing 'kick_members' permission.");
     
     // Let's first check if we have a member and if we can kick them!
@@ -164,7 +164,7 @@ client.on("message", async message => {
   if(command === "ban") {
     // Most of this command is identical to kick, except that here we'll only let admins do it.
     // In the real world mods could ban too, but this is just an example, right? ;)
-    if(!message.author.hasPermission("BAN_MEMBERS"))
+    if(!message.author.hasPermission('BAN_MEMBERS'))
       return message.reply("Can't ban the user, you're missing 'ban_members' permission.");
     
     let member = message.mentions.members.first();
@@ -182,7 +182,7 @@ client.on("message", async message => {
   }
   
   if(command === "purge") {
-    if(!message.author.hasPermission("MANAGE_MESSAGES"))
+    if(!message.author.hasPermission('MANAGE_MESSAGES'))
       return message.reply("Can't purge, you're missing 'manage_messages' permission.")
     
     // get the delete count, as an actual number.
